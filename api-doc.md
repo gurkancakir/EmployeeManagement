@@ -4,8 +4,8 @@
 
 #### header
 
-> **username** : [username]
-> **password** : [password]
+> **Content-Type** : application/json
+
 > **X-Requested-With** : XMLHttpRequest
 
 #### json data
