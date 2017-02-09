@@ -1,0 +1,17 @@
+server.port: 9966
+spring.profiles: default
+app.security.jwt:
+  tokenExpirationTime: 15 # Number of minutes
+  refreshTokenExpTime: 60 # Minutes
+  tokenIssuer: http://gurkan.com
+  tokenSigningKey: xm8EV6Hy5RMFK4EEACIDAwQus
+  
+spring.datasource:
+  url: jdbc:mysql://localhost:3306/testDB?useSSL=false
+  username: gurkan
+  password: gurkan
+  data: "classpath*:data.sql"
+spring.jpa:
+  database-platform: org.hibernate.dialect.MySQL5Dialect
+  hibernate.ddl-auto: create
+  show-sql: true
