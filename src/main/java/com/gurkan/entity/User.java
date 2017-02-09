@@ -2,14 +2,7 @@ package com.gurkan.entity;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="app_user")
@@ -23,10 +16,19 @@ public class User {
     
     @Column(name="password")
     private String password;
-    
+
+    @Column(name="price")
+    private int price;
+
+    @Column(name="weeklyWorkingHours")
+    private int weeklyWorkingHours;
+
     @OneToMany
     @JoinColumn(name="app_user_id", referencedColumnName="id")
     private List<UserRole> roles;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Task> tasks;
     
     public User() { }
     
@@ -51,5 +53,29 @@ public class User {
 
     public List<UserRole> getRoles() {
         return roles;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getWeeklyWorkingHours() {
+        return weeklyWorkingHours;
+    }
+
+    public void setWeeklyWorkingHours(int weeklyWorkingHours) {
+        this.weeklyWorkingHours = weeklyWorkingHours;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
