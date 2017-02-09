@@ -44,3 +44,33 @@
 }
 ```
 ------
+
+## /api/user
+
+#### header
+> **X-Authorization** : Bearer [token]
+
+#### body
+require
+> **username** : [username]
+
+> **password** : [password]
+
+optional
+> **price** : [price]
+
+> **weeklyWorkingHours** : [weeklyWorkingHours]
+
+#### response
+```
+{
+  "id": 4,
+  "username": "gurkan1",
+  "password": "test",
+  "price": 2400,
+  "weeklyWorkingHours": 0,
+  "roles": null,
+  "tasks": null
+}
+```
+--------
