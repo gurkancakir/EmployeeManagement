@@ -31,14 +31,18 @@ public class User {
     private List<Task> tasks;
     
     public User() { }
-    
-    public User(Long id, String username, String password, List<UserRole> roles) {
-        this.id = id;
+
+    public User(String username, String password) {
+
         this.username = username;
         this.password = password;
-        this.roles = roles;
-        this.price = 0;
-        this.weeklyWorkingHours = 0;
+    }
+    
+    public User(String username, String password, int price, int weeklyWorkingHours) {
+        this.username = username;
+        this.password = password;
+        this.price = price;
+        this.weeklyWorkingHours = weeklyWorkingHours;
     }
 
     public Long getId() {
@@ -80,4 +84,6 @@ public class User {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+
 }
