@@ -37,6 +37,8 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = roles;
+        this.price = 0;
+        this.weeklyWorkingHours = 0;
     }
 
     public Long getId() {

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.gurkan.security.model.UserContext;
-import com.gurkan.user.service.DatabaseUserService;
+import com.gurkan.service.DatabaseUserService;
 
 
 @Component

@@ -1,10 +1,10 @@
-package com.gurkan.user.service;
+package com.gurkan.service;
 
 import java.util.Optional;
 
 import com.gurkan.entity.User;
 import com.gurkan.security.UserService;
-import com.gurkan.user.repository.UserRepository;
+import com.gurkan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

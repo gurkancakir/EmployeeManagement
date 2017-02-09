@@ -1,4 +1,4 @@
-package com.gurkan.user.repository;
+package com.gurkan.repository;
 
 import java.util.Optional;
 
