@@ -11,21 +11,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gurkan.security.model.UserContext;
 
-import java.util.Arrays;
-import java.util.List;
 
 
 @RestController
-public class ProfileController {
+public class AdminController {
 
     @Autowired
     public DatabaseUserService databaseUserService;
 
+    /*
+    *   description : Get Token Principal
+    *   method      : GET
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
     @RequestMapping(value="/api/me", method=RequestMethod.GET)
-    public @ResponseBody UserContext get(JwtAuthenticationToken token) {
+    @ResponseBody
+    public UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();
     }
 
+    /*
+    *   description : Create User
+    *   method      : POST
+    *   required    : String username
+    *                 String password
+    *   optional    : Integer price
+    *                 Integer weeklyWorkingHours
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
     @RequestMapping(value="/api/user", method=RequestMethod.POST)
     @ResponseBody
     public User createUser(String username, String password, Integer price, Integer weeklyWorkingHours) {
@@ -35,4 +52,6 @@ public class ProfileController {
         User user = new User(username, password, price, weeklyWorkingHours);
         return databaseUserService.getUserRepository().save(user);
     }
+
+
 }
