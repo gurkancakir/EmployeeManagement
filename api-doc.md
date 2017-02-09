@@ -11,8 +11,8 @@
 #### json data
 ```
 {
-    "username": "test@gmail.com",
-    "password": "test1234"
+    "username": [username],
+    "password": [password]
 }
 ```
 #### response
