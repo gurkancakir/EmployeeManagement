@@ -1,6 +1,6 @@
 # Api Documentation
 
-## /api/auth/login
+## /api/auth/login      [POST]
 
 #### header
 
@@ -24,7 +24,7 @@
 ```
 --------
 
-## /api/me
+## /api/me      [GET]
 
 #### header
 > **X-Authorization** : Bearer [token]
@@ -45,12 +45,12 @@
 ```
 ------
 
-## /api/user
+## /api/user [POST]
 
 #### header
 > **X-Authorization** : Bearer [token]
 
-#### body
+#### body       
 require
 > **username** : [username]
 
@@ -68,6 +68,61 @@ optional
   "username": "gurkan1",
   "password": "test",
   "price": 2400,
+  "weeklyWorkingHours": 0,
+  "roles": null,
+  "tasks": null
+}
+```
+--------
+
+## /api/user [GET]
+
+#### header
+> **X-Authorization** : Bearer [token]
+
+#### body       
+require
+> **username** : [username]
+
+
+#### response
+```
+{
+  "id": 1,
+  "username": "test@gmail.com",
+  "password": "$2a$10$bnC26zz//2cavYoSCrlHdecWF8tkGfPodlHcYwlACBBwJvcEf0p2G",
+  "price": 0,
+  "weeklyWorkingHours": 0,
+  "roles": [
+    {
+      "role": "ADMIN"
+    },
+    {
+      "role": "PREMIUM_MEMBER"
+    }
+  ],
+  "tasks": []
+}
+```
+--------
+
+## /api/user [DELETE]
+
+#### header
+> **X-Authorization** : Bearer [token]
+
+#### body       
+require
+> **username** : [username]
+
+
+#### response
+```
+{
+  "id": null,
+  "username": null,
+  "password": null,
+  "price": 0,
   "weeklyWorkingHours": 0,
   "roles": null,
   "tasks": null
