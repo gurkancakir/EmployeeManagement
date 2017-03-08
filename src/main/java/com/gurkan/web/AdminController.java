@@ -1,7 +1,9 @@
 package com.gurkan.web;
 
+import com.gurkan.entity.Department;
 import com.gurkan.entity.User;
 import com.gurkan.security.auth.JwtAuthenticationToken;
+import com.gurkan.service.DatabaseDepartmentService;
 import com.gurkan.service.DatabaseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +22,9 @@ public class AdminController {
 
     @Autowired
     public DatabaseUserService databaseUserService;
+
+    @Autowired
+    public DatabaseDepartmentService databaseDepartmentService;
 
     /*
     *   description : Get Token Principal
@@ -114,6 +119,91 @@ public class AdminController {
         if (user.getId() != null)
             databaseUserService.getUserRepository().delete(user);
         return user;
+    }
+
+    /*
+    *   description : Get Department
+    *   method      : GET
+    *   required    : String name
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/department", method=RequestMethod.GET)
+    @ResponseBody
+    public Department getDepartment(String name) {
+        return databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+    }
+
+    /*
+    *   description : Delete Department
+    *   method      : DELETE
+    *   required    : String name
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/department", method=RequestMethod.DELETE)
+    @ResponseBody
+    public Department deleteDepartment(String name) {
+        Department department = databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+        if (department != null)
+            databaseDepartmentService.getDepartmentRepository().delete(department);
+        return department;
+    }
+
+    /*
+    *   description : Create Department
+    *   method      : POST
+    *   required    : String name
+    *                 int    startDay
+    *                 int    endDay
+    *                 int    startHour
+    *                 int    endHour
+    *                 int    startMinute
+    *                 int    endMinute
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/department", method=RequestMethod.POST)
+    @ResponseBody
+    public Department createDepartment(String name, Integer startDay, Integer endDay, Integer startHour, Integer endHour, Integer startMinute, Integer endMinute) {
+
+        if (name != null && startDay != null && endDay != null && startHour != null && endHour != null && startMinute != null && endMinute != null)
+            return databaseDepartmentService.getDepartmentRepository().save(new Department(name, startHour, endHour, startMinute, endMinute, startDay, endDay));
+        return new Department();
+    }
+
+    /*
+    *   description : Update Department
+    *   method      : PUT
+    *   required    : String name
+    *   optional    : int    startDay
+    *                 int    endDay
+    *                 int    startHour
+    *                 int    endHour
+    *                 int    startMinute
+    *                 int    endMinute
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/department", method=RequestMethod.PUT)
+    @ResponseBody
+    public Department updateDepartment(String name, Integer startDay, Integer endDay, Integer startHour, Integer endHour, Integer startMinute, Integer endMinute) {
+        Department department = databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+        if (department == null)
+            return department;
+
+        if (startDay != null)  department.setStartDays(startDay);
+        if (endDay != null )   department.setEndDays(endDay);
+        if (startHour != null) department.setStartHour(startHour);
+        if (endHour != null)   department.setEndHour(endHour);
+        if (startMinute != null) department.setStartMinute(startMinute);
+        if (endMinute != null)  department.setEndMinute(endMinute);
+
+        return department;
     }
 
 }

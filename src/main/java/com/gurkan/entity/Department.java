@@ -42,6 +42,20 @@ public class Department {
     @Column(name="endDays")
     private int endDays;
 
+    public Department(String name, int startHour, int endHour, int startMinute, int endMinute, int startDays, int endDays) {
+        this.name = name;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.startMinute = startMinute;
+        this.endMinute = endMinute;
+        this.startDays = startDays;
+        this.endDays = endDays;
+    }
+
+    public Department() {
+
+    }
+
     public Long getId() {
         return id;
     }
