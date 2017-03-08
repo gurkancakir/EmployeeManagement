@@ -13,5 +13,5 @@ spring.datasource:
   data: "classpath*:data.sql"
 spring.jpa:
   database-platform: org.hibernate.dialect.MySQL5Dialect
-  hibernate.ddl-auto: update
+  hibernate.ddl-auto: create
   show-sql: true

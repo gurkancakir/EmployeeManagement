@@ -39,6 +39,18 @@ public class Task {
     @Column(name = "endDate")
     private Date endDate;
 
+    public Task() {
+
+    }
+
+    public Task(String name, String description, boolean isComplete, Date startDate, Date endDate) {
+        this.name = name;
+        this.description = description;
+        this.isComplete = isComplete;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Long getId() {
         return id;
     }

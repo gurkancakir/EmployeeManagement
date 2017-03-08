@@ -1,9 +1,13 @@
 package com.gurkan.web;
 
 import com.gurkan.entity.Department;
+import com.gurkan.entity.Task;
+import com.gurkan.entity.TaskDetail;
 import com.gurkan.entity.User;
 import com.gurkan.security.auth.JwtAuthenticationToken;
 import com.gurkan.service.DatabaseDepartmentService;
+import com.gurkan.service.DatabaseTaskDetailService;
+import com.gurkan.service.DatabaseTaskService;
 import com.gurkan.service.DatabaseUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gurkan.security.model.UserContext;
 
+import java.util.Date;
 
 
 @RestController
@@ -25,6 +30,14 @@ public class AdminController {
 
     @Autowired
     public DatabaseDepartmentService databaseDepartmentService;
+
+    @Autowired
+    public DatabaseTaskService databaseTaskService;
+
+    @Autowired
+    public DatabaseTaskDetailService databaseTaskDetailService;
+
+    // --------------------------------------------------------------//
 
     /*
     *   description : Get Token Principal
@@ -38,6 +51,10 @@ public class AdminController {
     public UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();
     }
+
+
+
+    // --------------------------------------------------------------//
 
     /*
     *   description : Create User
@@ -121,6 +138,9 @@ public class AdminController {
         return user;
     }
 
+
+    // --------------------------------------------------------------//
+
     /*
     *   description : Get Department
     *   method      : GET
@@ -132,7 +152,7 @@ public class AdminController {
     @RequestMapping(value="/department", method=RequestMethod.GET)
     @ResponseBody
     public Department getDepartment(String name) {
-        return databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+        return databaseDepartmentService.findByName(name).orElse(new Department());
     }
 
     /*
@@ -146,9 +166,9 @@ public class AdminController {
     @RequestMapping(value="/department", method=RequestMethod.DELETE)
     @ResponseBody
     public Department deleteDepartment(String name) {
-        Department department = databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+        Department department = databaseDepartmentService.findByName(name).orElse(new Department());
         if (department != null)
-            databaseDepartmentService.getDepartmentRepository().delete(department);
+            databaseDepartmentService.delete(department);
         return department;
     }
 
@@ -171,7 +191,7 @@ public class AdminController {
     public Department createDepartment(String name, Integer startDay, Integer endDay, Integer startHour, Integer endHour, Integer startMinute, Integer endMinute) {
 
         if (name != null && startDay != null && endDay != null && startHour != null && endHour != null && startMinute != null && endMinute != null)
-            return databaseDepartmentService.getDepartmentRepository().save(new Department(name, startHour, endHour, startMinute, endMinute, startDay, endDay));
+            return databaseDepartmentService.save(new Department(name, startHour, endHour, startMinute, endMinute, startDay, endDay));
         return new Department();
     }
 
@@ -192,7 +212,7 @@ public class AdminController {
     @RequestMapping(value="/department", method=RequestMethod.PUT)
     @ResponseBody
     public Department updateDepartment(String name, Integer startDay, Integer endDay, Integer startHour, Integer endHour, Integer startMinute, Integer endMinute) {
-        Department department = databaseDepartmentService.getDepartmentRepository().findByName(name).orElse(new Department());
+        Department department = databaseDepartmentService.findByName(name).orElse(new Department());
         if (department == null)
             return department;
 
@@ -205,5 +225,179 @@ public class AdminController {
 
         return department;
     }
+
+
+    // --------------------------------------------------------------//
+
+    /*
+    *   description : Get Task
+    *   method      : GET
+    *   required    : String name
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task", method=RequestMethod.GET)
+    @ResponseBody
+    public Task getTask(String name) {
+        return databaseTaskService.findByName(name).orElse(new Task());
+    }
+
+    /*
+    *   description : Create Task
+    *   method      : POST
+    *   required    : String  name
+    *                 String  description
+    *                 date    startDate
+    *                 date    endDate
+    *
+    *   optional    : boolean isComplete, default:false
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task", method=RequestMethod.POST)
+    @ResponseBody
+    public Task createTask(String name, String description, Boolean isComplate, Date startDate, Date endDate) {
+
+        if (name != null && description != null && startDate != null && endDate != null) {
+            Boolean isComp = isComplate == true;
+            return databaseTaskService.save(new Task(name, description, isComp, startDate, endDate ));
+        }
+        return new Task();
+    }
+
+    /*
+    *   description : Update Task
+    *   method      : PUT
+    *   required    : String  name
+    *
+    *   optional    : String  description
+    *                 date    startDate
+    *                 date    endDate
+    *                 boolean isComplete
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task", method=RequestMethod.PUT)
+    @ResponseBody
+    public Task updateTask(String name, String description, Boolean isComplate, Date startDate, Date endDate) {
+
+        Task task = databaseTaskService.findByName(name).orElse(new Task());
+        if (task == null)
+            return task;
+
+        if (description != null)  task.setDescription(description);
+        if (isComplate != null )   task.setComplete(isComplate);
+        if (startDate != null) task.setStartDate(startDate);
+        if (endDate != null)   task.setEndDate(endDate);
+
+        return task;
+    }
+
+    /*
+    *   description : Delete Task
+    *   method      : DELETE
+    *   required    : String name
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task", method=RequestMethod.DELETE)
+    @ResponseBody
+    public Task deleteTask(String name) {
+        Task task = databaseTaskService.findByName(name).orElse(new Task());
+        if (task != null)
+            databaseTaskService.delete(task);
+        return task;
+    }
+
+    // --------------------------------------------------------------//
+
+    /*
+    *   description : Get Task Detail
+    *   method      : GET
+    *   required    : Long id
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task-detail", method=RequestMethod.GET)
+    @ResponseBody
+    public TaskDetail getTaskDetail(Long id) {
+        return databaseTaskDetailService.findOne(id);
+    }
+
+
+    /*
+    *   description : Delete Task Detail
+    *   method      : DELETE
+    *   required    : Long id
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task-detail", method=RequestMethod.DELETE)
+    @ResponseBody
+    public TaskDetail deleteTaskDetail(Long id) {
+        TaskDetail taskDetail =  databaseTaskDetailService.findOne(id);
+        if (taskDetail != null)
+            databaseTaskDetailService.delete(taskDetail);
+        return taskDetail;
+    }
+
+    /*
+    *   description : Create Task Detail
+    *   method      : POST
+    *   required    : Long id
+    *                 String message
+    *                 Date date
+    *
+    *   optional    : int time
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task-detail", method=RequestMethod.POST)
+    @ResponseBody
+    public TaskDetail createTaskDetail(Long id, String message, Date date, Integer time) {
+
+        if (id != null && message != null && date != null) {
+            time = (time == null) ? 0 : time;
+            return databaseTaskDetailService.save(new TaskDetail(message, date, time));
+        }
+        return new TaskDetail();
+    }
+
+    /*
+    *   description : Create Task Detail
+    *   method      : POST
+    *   required    : Long id
+    *
+    *   optional    : String message
+    *                 Date date
+    *                 int time
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/task-detail", method=RequestMethod.PUT)
+    @ResponseBody
+    public TaskDetail updateTaskDetail(Long id, String message, Date date, Integer time) {
+
+        TaskDetail taskDetail = databaseTaskDetailService.findOne(id);
+
+        if (taskDetail == null)
+            return taskDetail;
+
+        if (message != null)  taskDetail.setMessage(message);
+        if (date != null )   taskDetail.setDate(date);
+        if (time != null) taskDetail.setTime(time);
+
+        return taskDetail;
+    }
+
+    // --------------------------------------------------------------//
 
 }
