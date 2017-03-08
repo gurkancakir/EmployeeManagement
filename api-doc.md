@@ -24,7 +24,7 @@
 ```
 --------
 
-## /api/me      [GET]
+## /api/v1/me      [GET]
 
 #### header
 > **X-Authorization** : Bearer [token]
@@ -45,7 +45,7 @@
 ```
 ------
 
-## /api/user [POST]
+## /api/v1/user [POST]
 
 #### header
 > **X-Authorization** : Bearer [token]
@@ -75,7 +75,7 @@ optional
 ```
 --------
 
-## /api/user [GET]
+## /api/v1/user [GET]
 
 #### header
 > **X-Authorization** : Bearer [token]
@@ -106,7 +106,7 @@ require
 ```
 --------
 
-## /api/user [DELETE]
+## /api/v1/user [DELETE]
 
 #### header
 > **X-Authorization** : Bearer [token]

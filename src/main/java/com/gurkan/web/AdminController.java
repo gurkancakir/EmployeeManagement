@@ -15,6 +15,7 @@ import com.gurkan.security.model.UserContext;
 
 
 @RestController
+@RequestMapping("/api/v1")
 public class AdminController {
 
     @Autowired
@@ -27,7 +28,7 @@ public class AdminController {
     *   @Author Gurkan CAKIR
     *
     * */
-    @RequestMapping(value="/api/me", method=RequestMethod.GET)
+    @RequestMapping(value="/me", method=RequestMethod.GET)
     @ResponseBody
     public UserContext get(JwtAuthenticationToken token) {
         return (UserContext) token.getPrincipal();
@@ -44,7 +45,7 @@ public class AdminController {
     *   @Author Gurkan CAKIR
     *
     * */
-    @RequestMapping(value="/api/user", method=RequestMethod.POST)
+    @RequestMapping(value="/user", method=RequestMethod.POST)
     @ResponseBody
     public User createUser(String username, String password, Integer price, Integer weeklyWorkingHours) {
         price = (price == null) ? 0 : price;
@@ -56,6 +57,34 @@ public class AdminController {
     }
 
     /*
+    *   description : Update User
+    *   method      : PUT
+    *   required    : String username
+    *   optional    : String password
+    *                 Integer price
+    *                 Integer weeklyWorkingHours
+    *
+    *   @Author Gurkan CAKIR
+    *
+    * */
+    @RequestMapping(value="/user", method=RequestMethod.PUT)
+    @ResponseBody
+    public User updateUser(String username, String password, Integer price, Integer weeklyWorkingHours) {
+        User user = getUser(username);
+        if (user == null)
+            return user;
+        price = (price == null) ? user.getPrice() : price;
+        weeklyWorkingHours = (weeklyWorkingHours == null) ? user.getWeeklyWorkingHours() : weeklyWorkingHours;
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        password = (password == null) ? user.getPassword() : bCryptPasswordEncoder.encode(password);
+
+        user.setPrice(price);
+        user.setWeeklyWorkingHours(weeklyWorkingHours);
+
+        return databaseUserService.getUserRepository().save(user);
+    }
+
+    /*
     *   description : Get User
     *   method      : GET
     *   required    : String username
@@ -63,7 +92,7 @@ public class AdminController {
     *   @Author Gurkan CAKIR
     *
     * */
-    @RequestMapping(value="/api/user", method=RequestMethod.GET)
+    @RequestMapping(value="/user", method=RequestMethod.GET)
     @ResponseBody
     public User getUser(String username) {
         return databaseUserService.getUserRepository().findByUsername(username).orElse(new User());
@@ -78,7 +107,7 @@ public class AdminController {
     *   @Author Gurkan CAKIR
     *
     * */
-    @RequestMapping(value="/api/user", method=RequestMethod.DELETE)
+    @RequestMapping(value="/user", method=RequestMethod.DELETE)
     @ResponseBody
     public User deleteUser(String username) {
         User user =  databaseUserService.getUserRepository().findByUsername(username).orElse(new User());
